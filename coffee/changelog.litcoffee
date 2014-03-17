@@ -1,5 +1,3 @@
-    pg = require 'pg'
-
 ## get()
 
 Get changelogs since given date.
@@ -14,6 +12,8 @@ Get changelogs since given date.
 Returns `undefined`.
 
     exports.get = (since, cb) ->
+      pg = require 'pg'
+
       client = new pg.Client process.env.SH2_PG_CON
       client.connect (err) ->
         return cb err if err
