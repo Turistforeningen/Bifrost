@@ -53,7 +53,7 @@ purposes.
       client.captureMessage "There are #{logs.length} new logs", level: 'debug'
       console.log "There are #{logs.length} new logs"
 
-We use [async](https://github.com/caolan/async) for congestion control when
+We use [Async.js](https://github.com/caolan/async) for congestion control when
 syncronizing the changed items to Nasjonal Turbase. We are only processing `5`
 items at the same time.
 
