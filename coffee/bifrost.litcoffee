@@ -34,7 +34,8 @@ stamps to make them easier to handle.
     nextrun = moment().zone('+01:00')
 
 Fetch a list of changed items from the `sherpa2.changelog` postgres table. We
-are interested in items `inserted`, `update`, and `deleted` since last run.
+are only interested in items `inserted`, `updated`, and `deleted` for the data
+types in Nasjonal Turbase since last run.
 
     changelog.get lastrun, (err, logs) ->
 
