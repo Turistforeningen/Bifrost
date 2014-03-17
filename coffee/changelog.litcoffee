@@ -51,7 +51,7 @@ Returns a `String` with corresponding type if found; otherwise `undefined`.
       {
         cabin2    : 'steder'
         trip      : 'turer'
-        location2 : 'områder'
+        location2 : encodeURIComponent('områder')
         group     : 'grupper'
         image     : 'bilder'
       }[type]
