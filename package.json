@@ -1,0 +1,31 @@
+{
+  "name": "bitfrost",
+  "version": "1.0.0",
+  "description": "In Norse mythology, Bifröst is the bridge between the land of mortals, Midgard, and the land of the gods, Asgard.",
+  "main": "coffee/worker.litcoffee",
+  "scripts": {
+    "test": "test/suit.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Turistforeningen/bifrost.git"
+  },
+  "keywords": [
+    "REST",
+    "sync",
+    "bridge",
+    "worker"
+  ],
+  "author": "Hans Kristian Flaatten",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Turistforeningen/bifrost/issues"
+  },
+  "homepage": "https://github.com/Turistforeningen/bifrost",
+  "dependencies": {
+    "request": "^2.34.0",
+    "async": "^0.2.10",
+    "pg": "^2.11.1",
+    "coffee-script": "^1.7.1"
+  }
+}
