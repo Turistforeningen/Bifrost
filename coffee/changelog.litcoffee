@@ -21,3 +21,12 @@
           cb err, res.rows
           client.end()
 
+    exports.sh2ntb = (type) ->
+      {
+        cabin2    : 'steder'
+        trip      : 'turer'
+        location2 : 'områder'
+        group     : 'grupper'
+        image     : 'bilder'
+      }[type]
+
