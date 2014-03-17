@@ -5,31 +5,13 @@
 $script = <<SCRIPT
 
 # Update & Install
+echo 'Updating and installing ubuntu packages...'
 apt-get update
 apt-get install -y build-essential python-setuptools git curl postgresql postgresql-client
 easy_install pip && pip install setuptools --no-use-wheel --upgrade && pip install dotcloud
 
-# Read secret environment variables
-NTB_API_KEY=`cat ./env/NTB_API_KEY`
-SH2_API_KEY=`cat ./env/SH2_API_KEY`
-SH2_PG_CON=`cat ./env/SH2_PG_CON`
-SENTRY_DNS=`cat ./env/SENTRY_DNS`
-
-# Vagrant Environment Varaibles
-echo "Setting environment variables..."
-
-echo "export NODE_ENV=development"                            >> /home/vagrant/.bashrc
-echo "export PORT_WWW=8080"                                   >> /home/vagrant/.bashrc
-echo "export NTB_API_KEY=$NTB_API_KEY"                        >> /home/vagrant/.bashrc
-echo "export NTB_API_URL=http://api.nasjonalturbase.no/"      >> /home/vagrant/.bashrc
-echo "export SH2_API_KEY=$SH2_API_KEY"                        >> /home/vagrant/.bashrc
-echo "export SH2_API_URL=http://sherpa2.nasjonalturbase.no/"  >> /home/vagrant/.bashrc
-echo "export SH2_PG_CON=$SH2_PG_CON"                          >> /home/vagrant/.bashrc
-echo "export SENTRY_DNS=$SENTRY_DNS"                          >> /home/vagrant/.bashrc
-echo "\ncd /vagrant"                                          >> /home/vagrant/.bashrc
-
 # NodeJS via NVM
-echo "Installing NVM..."
+echo "Installing Node Version Manager..."
 export HOME=/home/vagrant
 curl https://raw.github.com/creationix/nvm/master/install.sh | sh
 echo "source ~/.nvm/nvm.sh" >> /home/vagrant/.bashrc
@@ -46,6 +28,27 @@ echo "PATH=$PATH:/vagrant/node_modules/.bin" >> /home/vagrant/.bashrc
 PATH=$PATH:/vagrant/node_modules/.bin
 cd /vagrant && rm -rf node_modules
 [ -f package.json ] && npm install
+
+# Read secret environment variables
+NTB_API_KEY=`cat ./env/NTB_API_KEY`
+SH2_API_KEY=`cat ./env/SH2_API_KEY`
+SH2_PG_CON=`cat ./env/SH2_PG_CON`
+SENTRY_DNS=`cat ./env/SENTRY_DNS`
+
+# Vagrant Environment Varaibles
+echo "Setting environment variables..."
+echo "export NODE_ENV=development"                            >> /home/vagrant/.bashrc
+echo "export PORT_WWW=8080"                                   >> /home/vagrant/.bashrc
+echo "export NTB_API_KEY=$NTB_API_KEY"                        >> /home/vagrant/.bashrc
+echo "export NTB_API_URL=http://api.nasjonalturbase.no/"      >> /home/vagrant/.bashrc
+echo "export SH2_API_KEY=$SH2_API_KEY"                        >> /home/vagrant/.bashrc
+echo "export SH2_API_URL=http://sherpa2.nasjonalturbase.no/"  >> /home/vagrant/.bashrc
+echo "export SH2_PG_CON=$SH2_PG_CON"                          >> /home/vagrant/.bashrc
+echo "export SENTRY_DNS=$SENTRY_DNS"                          >> /home/vagrant/.bashrc
+echo "\ncd /vagrant"                                          >> /home/vagrant/.bashrc
+
+chown vagrant:vagrant /home/vagrant/.nvm
+chown vagrant:vagrant /home/vagrant/tmp
 
 SCRIPT
 
