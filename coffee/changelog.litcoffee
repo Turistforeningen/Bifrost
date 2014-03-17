@@ -6,14 +6,14 @@ Get changelogs since given date.
 
 ### Params
 
-* `Date` since - changelogs to fetch since date.
+* `Moment` since - changelogs to fetch since date.
 * `function` cb - callback function (`Error` err, `Object` res).
 
 ### Return
 
 Returns `undefined`.
 
-    exports.get = (time, cb) ->
+    exports.get = (since, cb) ->
       client = new pg.Client process.env.SH2_PG_CON
       client.connect (err) ->
         return cb err if err
@@ -27,11 +27,11 @@ Returns `undefined`.
               WHERE
                 (l.lg_object IN ('#{['cabin2', 'group', 'location2', 'trip'].join("','")}')
                   OR (l.lg_object = 'image' AND l.lg_action = 'delete'))
-                AND l.lg_timestamp > '2014-03-01'
+                AND l.lg_timestamp > '#{since.format("YYYY-MM-DD HH:mm:ss")}'
               ORDER BY l.lg_timestamp ASC"
 
         client.query sql, (err, res) ->
-          cb err, res.rows
+          cb err, res?.rows or null
           client.end()
 
 ## sh2ntb()
