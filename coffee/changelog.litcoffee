@@ -1,5 +1,18 @@
     pg = require 'pg'
 
+## get()
+
+Get changelogs since given date.
+
+### Params
+
+* `Date` since - changelogs to fetch since date.
+* `function` cb - callback function (`Error` err, `Object` res).
+
+### Return
+
+Returns `undefined`.
+
     exports.get = (time, cb) ->
       client = new pg.Client process.env.SH2_PG_CON
       client.connect (err) ->
@@ -20,6 +33,19 @@
         client.query sql, (err, res) ->
           cb err, res.rows
           client.end()
+
+## sh2ntb()
+
+Get Nasjonal Turbase data type for Sherpa2 data type.
+
+### Params
+
+* `string` type - Sherpa2 data type.
+
+### Return
+
+Returns a `String` with corresponding type if found; otherwise `undefined`.
+
 
     exports.sh2ntb = (type) ->
       {
