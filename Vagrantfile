@@ -42,7 +42,7 @@ echo "export PORT_WWW=8080"                                   >> /home/vagrant/.
 echo "export NTB_API_KEY=$NTB_API_KEY"                        >> /home/vagrant/.bashrc
 echo "export NTB_API_URL=http://dev.nasjonalturbase.no/"      >> /home/vagrant/.bashrc
 echo "export SH2_API_KEY=$SH2_API_KEY"                        >> /home/vagrant/.bashrc
-echo "export SH2_API_URL=http://sherpa2.nasjonalturbase.no/"  >> /home/vagrant/.bashrc
+echo "export SH2_API_URL=http://sherpa2.turistforeningen.no/" >> /home/vagrant/.bashrc
 echo "export SH2_PG_CON=$SH2_PG_CON"                          >> /home/vagrant/.bashrc
 echo "export SENTRY_DNS=$SENTRY_DNS"                          >> /home/vagrant/.bashrc
 echo "\ncd /vagrant"                                          >> /home/vagrant/.bashrc
