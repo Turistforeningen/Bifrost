@@ -13,6 +13,7 @@ easy_install pip && pip install setuptools --no-use-wheel --upgrade && pip insta
 NTB_API_KEY=`cat ./env/NTB_API_KEY`
 SH2_API_KEY=`cat ./env/SH2_API_KEY`
 SH2_PG_CON=`cat ./env/SH2_PG_CON`
+SENTRY_DNS=`cat ./env/SENTRY_DNS`
 
 # Vagrant Environment Varaibles
 echo "Setting environment variables..."
@@ -24,6 +25,7 @@ echo "export NTB_API_URL=http://api.nasjonalturbase.no/"      >> /home/vagrant/.
 echo "export SH2_API_KEY=$SH2_API_KEY"                        >> /home/vagrant/.bashrc
 echo "export SH2_API_URL=http://sherpa2.nasjonalturbase.no/"  >> /home/vagrant/.bashrc
 echo "export SH2_PG_CON=$SH2_PG_CON"                          >> /home/vagrant/.bashrc
+echo "export SENTRY_DNS=$SENTRY_DNS"                          >> /home/vagrant/.bashrc
 echo "\ncd /vagrant"                                          >> /home/vagrant/.bashrc
 
 # NodeJS via NVM
