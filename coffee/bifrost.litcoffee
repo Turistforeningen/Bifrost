@@ -31,8 +31,8 @@ year.
 Make [Moment.js](https://github.com/moment/moment) date objects for the date
 stamps to make them easier to handle.
 
-    lastrun = moment(lastrun).zone('+01:00')
-    nextrun = moment().zone('+01:00')
+    lastrun = moment(lastrun)
+    nextrun = moment()
 
 Fetch a list of changed items from the `sherpa2.changelog` postgres table. We
 are only interested in items `inserted`, `updated`, and `deleted` for the data
