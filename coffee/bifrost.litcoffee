@@ -52,7 +52,7 @@ In case the changelog retrival failed; log this to Sentry and exit with code
 Everything looks fine, lets just log the numnber of logs in queue for debug
 purposes.
 
-      sentry.captureMessage "There are #{logs.length} new logs", level: 'debug'
+      sentry.captureMessage 'Bifröst is running', level: 'debug', logs: logs.length
       console.log "There are #{logs.length} new logs"
 
 We use [Async.js](https://github.com/caolan/async) for congestion control when
