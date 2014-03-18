@@ -12,7 +12,7 @@ Sherpa2 and Turbasen API configurations.
       url: process.env.NTB_API_URL
       key: process.env.NTB_API_KEY
 
-## toTurbasen()
+## exports.toTurbasen()
 
 Syncronize change from Sherpa2 to Nasjonal Turbase.
 

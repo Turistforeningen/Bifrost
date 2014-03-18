@@ -1,4 +1,4 @@
-## get()
+## exports.get()
 
 Get changelogs since given date.
 
@@ -37,7 +37,7 @@ Returns `undefined`.
           cb err, res?.rows or null
           client.end()
 
-## sh2ntb()
+## exports.sh2ntb()
 
 Get Nasjonal Turbase data type for Sherpa2 data type.
 
