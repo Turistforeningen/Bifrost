@@ -8,7 +8,7 @@
 Configure the Raven client to connect to our
 [Sentry](https://sentry.turistforeningen.no/turistforeningen/bifrost/) instance.
 
-    client = new raven.Client process.env.SENTRY_DNS
+    exports.client = client = new raven.Client process.env.SENTRY_DNS
     client.captureMessage 'Bifröst is running', level: 'debug'
 
 Patch global exceptions. This way if something unanticipated happens we can log
