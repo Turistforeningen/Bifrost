@@ -8,13 +8,13 @@
 Configure the Raven client to connect to our
 [Sentry](https://sentry.turistforeningen.no/turistforeningen/bifrost/) instance.
 
-    exports.client = client = new raven.Client process.env.SENTRY_DNS
-    client.captureMessage 'Bifröst is running', level: 'debug'
+    exports.sentry = sentry = new raven.Client process.env.SENTRY_DNS
+    sentry.captureMessage 'Bifröst is running', level: 'debug'
 
 Patch global exceptions. This way if something unanticipated happens we can log
 it and hopefully fix it.
 
-    client.patchGlobal (isError, err) ->
+    sentry.patchGlobal (isError, err) ->
       console.error err
       console.error err.stack
       process.exit 1
@@ -45,14 +45,14 @@ In case the changelog retrival failed; log this to Sentry and exit with code
 `1`.
 
       if err
-        client.captureError err
+        sentry.captureError err
         console.error err
         process.exit 1
 
 Everything looks fine, lets just log the numnber of logs in queue for debug
 purposes.
 
-      client.captureMessage "There are #{logs.length} new logs", level: 'debug'
+      sentry.captureMessage "There are #{logs.length} new logs", level: 'debug'
       console.log "There are #{logs.length} new logs"
 
 We use [Async.js](https://github.com/caolan/async) for congestion control when
@@ -65,7 +65,7 @@ In case the syncronization to Nasjonal Turbase failed; log this to Sentry and
 exit with code `1`.
 
         if err
-          client.captureError err
+          sentry.captureError err
           console.error err
           process.exit 1
 
@@ -80,7 +80,7 @@ wont have to syncronize the same items next run.
 
 Lets log that Bifröst finished correctly and exit with code `0`.
 
-        client.captureMessage 'Bifröst is finished', level: 'debug'
+        sentry.captureMessage 'Bifröst is finished', level: 'debug'
         console.log 'Bifröst is finished'
         process.exit 0
 
