@@ -23,7 +23,7 @@ Returns `undefined`.
         return cb err if err
 
         sql = "SELECT l.lg_object AS sh2_type, l.lg_object_id AS sh2_id,
-                l.lg_action AS act, ntb.oid AS ntb_id
+                l.lg_action AS act, ntb.oid AS ntb_id, l.lg_timestamp AS time
               FROM log AS l
               LEFT JOIN ntb_id AS ntb
                 ON ntb.type = upper(substring(l.lg_object from 1 for 1))
