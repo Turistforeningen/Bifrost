@@ -7,10 +7,6 @@ Get changelogs since given date.
 * `Moment` since - changelogs to fetch since date.
 * `function` cb - callback function (`Error` err, `Object` res).
 
-### ToDo
-
-* Log SQL to Sentry.
-
 ### Return
 
 Returns `undefined`.
@@ -35,6 +31,7 @@ Returns `undefined`.
               ORDER BY l.lg_timestamp ASC"
 
         console.log sql
+        module.parent.exports.sentry.captureQuery sql, 'psql'
 
         client.query sql, (err, res) ->
           cb err, res?.rows or null
