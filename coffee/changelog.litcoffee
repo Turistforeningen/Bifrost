@@ -34,6 +34,8 @@ Returns `undefined`.
                 AND l.lg_timestamp > '#{since.zone('+02:00').format("YYYY-MM-DD HH:mm:ss")}'
               ORDER BY l.lg_timestamp ASC"
 
+        console.log sql
+
         client.query sql, (err, res) ->
           cb err, res?.rows or null
           client.end()
