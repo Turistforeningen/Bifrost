@@ -16,6 +16,7 @@ it and hopefully fix it.
 
     client.patchGlobal (isError, err) ->
       console.error err
+      console.error err.stack
       process.exit 1
 
 Get timestamp for when Bifröst was last run. We are only interesed in what has
