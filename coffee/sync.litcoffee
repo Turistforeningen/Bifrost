@@ -59,10 +59,6 @@ currently suspended.
 * `function` fn - function where the error originated.
 * `Array` args - function parameters for the original function.
 
-### ToDO
-
-* Capture error in Sentry.
-
 ### Return
 
 Returns `undefined`.
@@ -70,11 +66,11 @@ Returns `undefined`.
     queue = 0
     handleError = (err, fn, args) ->
       return cb(err) if err.code isnt 'ECONNRESET'
-      console.log 'ECONNRESET caught!'
+      module.parent.exports.sentry.captureError err, level: 'warning'
       console.error err
-      console.log "#{++queue} workers currently suspended."
+      console.error "ECONNRESET: #{++queue} workers currently suspended."
       return setTimeout ->
-        console.log "Restarting worker. #{--queue} workers suspended."
+        console.error "ECONRESET: Restarting worker. #{--queue} workers suspended."
         fn.apply null, args
       , (2000 * queue)
 
