@@ -56,10 +56,10 @@ purposes.
       console.log "There are #{logs.length} new logs"
 
 We use [Async.js](https://github.com/caolan/async) for congestion control when
-syncronizing the changed items to Nasjonal Turbase. We are only processing `5`
+syncronizing the changed items to Nasjonal Turbase. We are only processing `3`
 items at the same time.
 
-      async.eachLimit logs, 5, sync.toTurbasen, (err) ->
+      async.eachLimit logs, 3, sync.toTurbasen, (err) ->
 
 In case the syncronization to Nasjonal Turbase failed; log this to Sentry and
 exit with code `1`.
