@@ -19,7 +19,7 @@ Syncronize change from Sherpa2 to Nasjonal Turbase.
 ### Params
 
 * `object` item - Row from the changelog.
-* `function` cb - Async.js callback (err).
+* `function` cb - Async.js callback function (`Error` err).
 
 ### Return
 
