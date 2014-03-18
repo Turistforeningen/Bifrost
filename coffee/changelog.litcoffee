@@ -7,6 +7,10 @@ Get changelogs since given date.
 * `Moment` since - changelogs to fetch since date.
 * `function` cb - callback function (`Error` err, `Object` res).
 
+### ToDo
+
+* Log SQL to Sentry.
+
 ### Return
 
 Returns `undefined`.
