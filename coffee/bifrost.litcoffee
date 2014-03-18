@@ -72,6 +72,8 @@ exit with code `1`.
 Before exiting we update the `LASTRUN` file with the current timestamp so we
 wont have to syncronize the same items next run.
 
+        nextrun = moment(logs[logs.length-1].time) if logs?.length > 0
+        console.log "Next run will be #{nextrun.format('YY-MM-DD HH.mm:ss')}"
         require('fs').writeFileSync 'LASTUPDATE', nextrun.valueOf(),
           encoding: 'utf8'
           flag: 'w+'
