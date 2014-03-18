@@ -31,7 +31,7 @@ Returns `undefined`.
               ORDER BY l.lg_timestamp ASC"
 
         console.log sql
-        module.parent.exports.sentry.captureQuery sql, 'psql', level: 'debug'
+        module.parent.exports.sentry.captureQuery sql, 'postgresql', level: 'debug'
 
         client.query sql, (err, res) ->
           cb err, res?.rows or null
