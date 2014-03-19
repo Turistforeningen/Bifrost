@@ -45,6 +45,7 @@ echo "export SH2_API_KEY=$SH2_API_KEY"                        >> /home/vagrant/.
 echo "export SH2_API_URL=http://sherpa2.turistforeningen.no/" >> /home/vagrant/.bashrc
 echo "export SH2_PG_CON=$SH2_PG_CON"                          >> /home/vagrant/.bashrc
 echo "export SENTRY_DNS=$SENTRY_DNS"                          >> /home/vagrant/.bashrc
+echo "export UPDATE_INTERVAL=10"                              >> /home/vagrant/.bashrc
 echo "\ncd /vagrant"                                          >> /home/vagrant/.bashrc
 
 chown vagrant:vagrant /home/vagrant/.nvm
