@@ -8,6 +8,8 @@
 Configure the Raven client to connect to our
 [Sentry](https://sentry.turistforeningen.no/turistforeningen/bifrost/) instance.
 
+    exports.updated = []
+    exports.counter = 0
     exports.sentry = sentry = new raven.Client process.env.SENTRY_DNS,
       stackFunction: Error.prepareStackTrace
 
@@ -32,55 +34,69 @@ Make [Moment.js](https://github.com/moment/moment) date objects for the date
 stamps to make them easier to handle.
 
     lastrun = moment(lastrun)
-    nextrun = moment()
+    console.log lastrun.zone()
+    console.log lastrun.format('YYYY-MM-DD HH:mm:ss')
+
+Ok, we are done with the setup. Now, run this part forever.
+
+    async.forever (next) ->
 
 Fetch a list of changed items from the `sherpa2.changelog` postgres table. We
 are only interested in items `inserted`, `updated`, and `deleted` for the data
 types in Nasjonal Turbase since last run.
 
-    console.log "Fetching logs since #{lastrun.format('YYYY-MM-DD HH:mm:ss')}"
-    changelog.get lastrun, (err, logs) ->
+      console.log "Fetching logs since #{lastrun.format('YYYY-MM-DD HH:mm:ss')}"
+      changelog.get lastrun, (err, logs) ->
 
 In case the changelog retrival failed; log this to Sentry and exit with code
 `1`.
 
-      if err
-        sentry.captureError err
-        console.error err
-        process.exit 1
+        return next err if err
 
 Everything looks fine, lets just log the numnber of logs in queue for debug
 purposes.
 
-      sentry.captureMessage 'Bifröst is running', level: 'debug', logs: logs.length
-      console.log "There are #{logs.length} new logs"
+        sentry.captureMessage 'Bifröst is running', level: 'debug', logs: logs.length
+        console.log "There are #{logs.length} new logs"
 
 We use [Async.js](https://github.com/caolan/async) for congestion control when
 syncronizing the changed items to Nasjonal Turbase. We are only processing `3`
 items at the same time.
 
-      async.eachLimit logs, 3, sync.toTurbasen, (err) ->
+        async.eachLimit logs, 3, sync.toTurbasen, (err) ->
 
 In case the syncronization to Nasjonal Turbase failed; log this to Sentry and
 exit with code `1`.
 
-        if err
-          sentry.captureError err
-          console.error err
-          process.exit 1
+          return next err if err
 
 Before exiting we update the `LASTRUN` file with the current timestamp so we
 wont have to syncronize the same items next run.
 
-        nextrun = moment(logs[logs.length-1].time) if logs?.length > 0
-        console.log "Next run will be #{nextrun.format('YY-MM-DD HH.mm:ss')}"
-        require('fs').writeFileSync 'LASTUPDATE', nextrun.valueOf(),
-          encoding: 'utf8'
-          flag: 'w+'
+          console.log (logs?.length > 0)
+          lastrun = moment(logs[logs.length-1].time) if logs?.length > 0
+          console.log "Writing last log time: #{lastrun.format('YY-MM-DD HH.mm:ss')}"
+          require('fs').writeFileSync 'LASTUPDATE', lastrun.valueOf(),
+            encoding: 'utf8'
+            flag: 'w+'
 
-Lets log that Bifröst finished correctly and exit with code `0`.
+Before we run this again, lest reset the update cache and the counter.
 
-        sentry.captureMessage 'Bifröst is finished', level: 'debug'
-        console.log 'Bifröst is finished'
-        process.exit 0
+          exports.updated = []
+          exports.counter = 0
+
+Now, sleep for `X` seconds before running again. The sleep time is defined by
+the environment variable `UPDATE\_INTERVAL`.
+
+          console.log "Sleeping #{process.env.UPDATE_INTERVAL} seconds..."
+          setTimeout next, process.env.UPDATE_INTERVAL * 1000
+
+This is the `async.forever` callback handler. This is only run if the block
+above crashed or experienced some kind of error. Here we just log the error and
+then exits. Supervisor will restart this.
+
+    , (err) ->
+      sentry.captureError err
+      console.error err
+      process.exit 1
 
