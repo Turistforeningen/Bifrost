@@ -18,7 +18,8 @@ Returns `undefined`.
       client.connect (err) ->
         return cb err if err
 
-        sql = "SELECT l.lg_object AS sh2_type, l.lg_object_id AS sh2_id,
+        sql = "SET TIMEZONE TO 'GMT+01';
+              SELECT l.lg_object AS sh2_type, l.lg_object_id AS sh2_id,
                 l.lg_action AS act, ntb.oid AS ntb_id, l.lg_timestamp AS time
               FROM log AS l
               LEFT JOIN ntb_id AS ntb
@@ -27,7 +28,7 @@ Returns `undefined`.
               WHERE
                 (l.lg_object IN ('#{['cabin2', 'group', 'location2', 'trip'].join("','")}')
                   OR (l.lg_object = 'image' AND l.lg_action = 'delete'))
-                AND l.lg_timestamp > '#{since.zone('+02:00').format("YYYY-MM-DD HH:mm:ss")}'
+                AND l.lg_timestamp > '#{since.format("YYYY-MM-DD HH:mm:ss")}'
               ORDER BY l.lg_timestamp ASC"
 
         console.log sql
