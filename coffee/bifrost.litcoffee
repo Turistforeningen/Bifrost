@@ -26,7 +26,7 @@ changed in mean time. If the file does not exist, set the date to some time this
 year.
 
     try
-      lastrun = new Date parseInt require('fs').readFileSync 'LASTUPDATE', encoding: 'utf8'
+      lastrun = new Date parseInt require('fs').readFileSync 'data/LASTUPDATE', encoding: 'utf8'
     catch e
       lastrun = '2014-03-01'
 
@@ -74,7 +74,7 @@ wont have to syncronize the same items next run.
 
           lastrun = moment(logs[logs.length-1].time) if logs?.length > 0
           console.log "Writing last log time: #{lastrun.format('YY-MM-DD HH.mm:ss')}"
-          require('fs').writeFileSync 'LASTUPDATE', lastrun.valueOf(),
+          require('fs').writeFileSync 'data/LASTUPDATE', lastrun.valueOf(),
             encoding: 'utf8'
             flag: 'w+'
 
