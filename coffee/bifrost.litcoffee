@@ -34,8 +34,6 @@ Make [Moment.js](https://github.com/moment/moment) date objects for the date
 stamps to make them easier to handle.
 
     lastrun = moment(lastrun)
-    console.log lastrun.zone()
-    console.log lastrun.format('YYYY-MM-DD HH:mm:ss')
 
 Ok, we are done with the setup. Now, run this part forever.
 
@@ -73,7 +71,6 @@ exit with code `1`.
 Before exiting we update the `LASTRUN` file with the current timestamp so we
 wont have to syncronize the same items next run.
 
-          console.log (logs?.length > 0)
           lastrun = moment(logs[logs.length-1].time) if logs?.length > 0
           console.log "Writing last log time: #{lastrun.format('YY-MM-DD HH.mm:ss')}"
           require('fs').writeFileSync 'LASTUPDATE', lastrun.valueOf(),
