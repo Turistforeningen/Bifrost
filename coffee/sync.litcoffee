@@ -25,19 +25,19 @@ Syncronize change from Sherpa2 to Nasjonal Turbase.
 
 Return `undefined`.
 
-    updated = []
-    counter = 0
     exports.toTurbasen = (item, cb) ->
-      console.log ++counter, item.act, item.time
+      c = ++module.parent.exports.counter
+
+      console.log c, item.act, item.sh2_type, item.sh2_id, item.time
 
       if item.act is 'delete'
         return deleteFromTurbasen changelog.sh2ntb(item.sh2_type), item.ntb_id, cb
 
-      if item.ntb_id in updated
+      if item.ntb_id in module.parent.exports.updated
         console.log 'DUPLICATE', item.sh2_type, item.sh2_id
         return cb()
 
-      updated.push item.ntb_id
+      module.parent.exports.updated.push item.ntb_id
       syncItemFromSherpa item.sh2_type, item.sh2_id, cb
 
 ## handleError()
