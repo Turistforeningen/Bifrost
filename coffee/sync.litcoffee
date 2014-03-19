@@ -64,7 +64,7 @@ currently suspended.
 Returns `undefined`.
 
     queue = 0
-    handleError = (err, fn, args) ->
+    handleError = (err, cb, fn, args) ->
       return cb(err) if err.code isnt 'ECONNRESET'
       module.parent.exports.sentry.captureError err, level: 'warning'
       console.error err
@@ -95,7 +95,7 @@ Returns `undefined`.
       from = sh2.url + type + '/' + id + '?api_key=' + sh2.key
       tooo = ntb.url + changelog.sh2ntb(type) + '?api_key=' + ntb.key
 
-      errorHandler = (err) -> handleError err, syncItemFromSherpa, [type, id, cb]
+      errorHandler = (err) -> handleError err, cb, syncItemFromSherpa, [type, id, cb]
 
       request url: from, json: true, (err, res, body) ->
         return errorHandler err if err
@@ -124,7 +124,7 @@ Returns `undefined`.
       from = sh2.url + 'image/' + id + '?api_key=' + sh2.key
       tooo = ntb.url + 'bilder/?api_key=' + ntb.key
 
-      errorHandler = (err) -> handleError err, syncImageFromSherpa, [id, cb]
+      errorHandler = (err) -> handleError err, cb, syncImageFromSherpa, [id, cb]
 
       request(from)
         .on('error', errorHandler)
@@ -149,7 +149,7 @@ Returns `undefined`.
     deleteFromTurbasen = (type, id, cb) ->
       url = ntb.url + type + '/' + id + '?api_key=' + ntb.key
       request.del url: url, json: true, (err, res, body) ->
-        return handleError err, deleteFromTurbasen, [type, id, cb] if err
+        return handleError err, cb, deleteFromTurbasen, [type, id, cb] if err
         if not res.statusCode in [404, 204]
           return cb new Error("Unknown HTTP Status '#{res.statusCode}'")
         return cb()
