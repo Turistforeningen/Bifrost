@@ -17,5 +17,6 @@ LASTUPDATE
 npm-debug.log
 node_modules
 .vagrant
+.dotcloud
 env
 
