@@ -1,4 +1,4 @@
-Bifröst
+Bifröst [![Build Status](https://drone.io/github.com/Turistforeningen/bifrost/status.png)](https://drone.io/github.com/Turistforeningen/bifrost/latest)
 =======
 
 > In Norse mythology, Bifröst is the bridge between the land of mortals, Midgard,
