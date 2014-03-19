@@ -43,6 +43,7 @@ Fetch a list of changed items from the `sherpa2.changelog` postgres table. We
 are only interested in items `inserted`, `updated`, and `deleted` for the data
 types in Nasjonal Turbase since last run.
 
+      console.log '-------------------'
       console.log "Fetching logs since #{lastrun.format('YYYY-MM-DD HH:mm:ss')}"
       changelog.get lastrun, (err, logs) ->
 
