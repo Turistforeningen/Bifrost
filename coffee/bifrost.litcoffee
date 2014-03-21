@@ -78,6 +78,13 @@ wont have to syncronize the same items next run.
             encoding: 'utf8'
             flag: 'w+'
 
+This is to prevent memmory leakage. Whenever things are updated. Restart the
+process so that we can free some memory.
+
+          if exports.updated > 0
+            console.log "Updated #{exports.updated} items. Restarting."
+            process.exit 0
+
 Before we run this again, lest reset the update cache and the counter.
 
           exports.updated = []
