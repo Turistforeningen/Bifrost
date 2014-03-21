@@ -28,7 +28,7 @@ Returns `undefined`.
               WHERE
                 (l.lg_object IN ('#{['cabin2', 'group', 'location2', 'trip'].join("','")}')
                   OR (l.lg_object = 'image' AND l.lg_action = 'delete'))
-                AND l.lg_timestamp > '#{since.format("YYYY-MM-DD HH:mm:ss")}'
+                AND l.lg_timestamp > '#{since.format("YYYY-MM-DD HH:mm:ss.SSS")}'
               ORDER BY l.lg_timestamp ASC"
 
         console.log sql

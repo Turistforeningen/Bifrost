@@ -74,7 +74,7 @@ wont have to syncronize the same items next run.
 
           lastrun = moment(logs[logs.length-1].time) if logs?.length > 0
           console.log "Writing last log time: #{lastrun.format('YY-MM-DD HH.mm:ss')}"
-          require('fs').writeFileSync 'data/LASTUPDATE', lastrun.valueOf(),
+          require('fs').writeFileSync 'data/LASTUPDATE', lastrun.valueOf()+1000,
             encoding: 'utf8'
             flag: 'w+'
 
