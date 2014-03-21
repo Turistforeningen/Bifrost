@@ -81,8 +81,8 @@ wont have to syncronize the same items next run.
 This is to prevent memmory leakage. Whenever things are updated. Restart the
 process so that we can free some memory.
 
-          if exports.updated > 0
-            console.log "Updated #{exports.updated} items. Restarting."
+          if exports.counter > 0
+            console.log "Updated #{exports.counter} items. Restarting."
             process.exit 0
 
 Before we run this again, lest reset the update cache and the counter.
