@@ -86,7 +86,7 @@ process so that we can free some memory.
           if exports.counter > 0
             console.log "Updated #{exports.counter} items."
             console.log "Restarting in #{process.env.UPDATE_INTERVAL} seconds..."
-            return setTimeout, ->
+            return setTimeout ->
               process.exit 0
             , process.env.UPDATE_INTERVAL * 1000
 
