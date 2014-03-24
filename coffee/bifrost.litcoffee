@@ -87,7 +87,7 @@ process so that we can free some memory.
             console.log "Updated #{exports.counter} items."
             console.log "Shutting down in#{process.env.UPDATE_INTERVAL} seconds..."
             return setTimeout ->
-              console.olog 'Shutting down!'
+              console.log 'Shutting down!'
               process.exit 1
             , process.env.UPDATE_INTERVAL * 1000
 
