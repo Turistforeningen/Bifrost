@@ -88,10 +88,8 @@ process so that we can free some memory.
             console.log "Shutting down in #{process.env.UPDATE_INTERVAL} seconds..."
             return setTimeout ->
               console.log 'Shutting down!'
-              process.exit 0
+              process.exit 1
             , process.env.UPDATE_INTERVAL * 1000
-          else
-            process.exit 0
 
 Before we run this again, lest reset the update cache and the counter.
 
