@@ -44,7 +44,8 @@ Return `undefined`.
 
 Becuase UT-rivers are kicking of importing everything we sync as soon as it
 happens the API exeriences a huge surge in traffic. This results in some
-connections being reset by peer (`ECONNRESET`).
+connections being reset by peer (`ECONNRESET`) and a few connection timeouts
+(`ETIMEDOUT`).
 
 This is not a problem in it self and we just need to wait a coupple of seconds
 for the API to catch up with the traffic. We deal with this by suspending the
@@ -65,12 +66,12 @@ Returns `undefined`.
 
     queue = 0
     handleError = (err, cb, fn, args) ->
-      return cb(err) if err.code isnt 'ECONNRESET'
+      return cb(err) if err.code not in ['ECONNRESET', 'ETIMEDOUT']
       module.parent.exports.sentry.captureError err, level: 'warning'
       console.error err
-      console.error "ECONNRESET: #{++queue} workers currently suspended."
+      console.error "#{err.code}: #{++queue} workers currently suspended."
       return setTimeout ->
-        console.error "ECONRESET: Restarting worker. #{--queue} workers suspended."
+        console.error "#{err.code}: Restarting worker. #{--queue} workers suspended."
         fn.apply null, args
       , (2000 * queue)
 
