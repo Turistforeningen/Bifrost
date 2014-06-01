@@ -66,7 +66,7 @@ Returns `undefined`.
 
     queue = 0
     handleError = (err, cb, fn, args) ->
-      return cb(err) if err.code not in ['ECONNRESET', 'ETIMEDOUT']
+      # return cb(err) if err.code not in ['ECONNRESET', 'ETIMEDOUT']
       module.parent.exports.sentry.captureError err, level: 'warning'
       console.error err
       console.error "#{err.code}: #{++queue} workers currently suspended."
