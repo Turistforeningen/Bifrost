@@ -109,5 +109,9 @@ then exits. Supervisor will restart this.
     , (err) ->
       sentry.captureError err
       console.error err
-      process.exit 1
+      console.log "Shutting down in #{process.env.UPDATE_INTERVAL * 5} seconds..."
+      return setTimeout ->
+        console.log 'Shutting down!'
+        process.exit 1
+      , process.env.UPDATE_INTERVAL * 5 * 1000
 
