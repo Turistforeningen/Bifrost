@@ -4,9 +4,9 @@
   "description": "In Norse mythology, Bifröst is the bridge between the land of mortals, Midgard, and the land of the gods, Asgard.",
   "main": "coffee/worker.litcoffee",
   "scripts": {
-    "start": "supervisor -w coffee -- coffee/bifrost.litcoffee",
+    "start": "supervisor -w coffee -- src/bifrost.litcoffee",
     "test": "SILENT=ture mocha -b -c --check-leaks test/suite.coffee -R progress --compilers coffee:coffee-script/register -w",
-    "postinstall": "rm -rf src/* && coffee --bare -o src/ -c coffee/",
+    "postinstall": "rm -rf lib/* && coffee --bare -o lib/ -c src/",
     "test-drone": "SILENT=true node_modules/.bin/mocha test/suite.coffee -R spec --compilers coffee:coffee-script/register"
   },
   "repository": {
