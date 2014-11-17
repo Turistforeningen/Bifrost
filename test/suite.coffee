@@ -540,14 +540,14 @@ describe 'worker', ->
             retries: 5
             errors: []
             method: 'patch'
-            from: id: 1, type: 'image'
-            to: id: 1, type: 'bilder'
+            from: id: 2, type: 'image'
+            to: id: 2, type: 'bilder'
           },{
             retries: 5
             errors: []
             method: 'patch'
-            from: id: 2, type: 'image'
-            to: id: 2, type: 'bilder'
+            from: id: 1, type: 'image'
+            to: id: 1, type: 'bilder'
           }
         ]
 
