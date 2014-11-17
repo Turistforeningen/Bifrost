@@ -126,7 +126,7 @@ log = (method, task, res, doc, err) ->
     console.log res?.statusCode, method.toUpperCase(), task.from.url
   else
     librato.measure 'http.ntb.request', 1, source: method
-    librato.measure 'http.ntb.response', 1, source: res?.statusCode
+    librato.measure 'http.ntb.response', 1, source: res?.statusCode + ''
     librato.measure 'http.ntb.error', 1, source: err.code if err and err.code
 
     console.log res?.statusCode, method.toUpperCase(), task.to.url
