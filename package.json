@@ -1,6 +1,6 @@
 {
   "name": "bitfrost",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "In Norse mythology, Bifröst is the bridge between the land of mortals, Midgard, and the land of the gods, Asgard.",
   "main": "coffee/worker.litcoffee",
   "scripts": {
