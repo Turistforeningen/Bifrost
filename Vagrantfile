@@ -21,14 +21,14 @@ LIBRATO_TOKEN=`cat /vagrant/env/LIBRATO_TOKEN`
 # Vagrant Environment Varaibles
 echo "Setting environment variables..."
 echo "export NODE_ENV=development"                            >> /home/vagrant/.bashrc
-echo "export PORT_WWW=8080"                                   >> /home/vagrant/.bashrc
 echo "export NTB_API_KEY=$NTB_API_KEY"                        >> /home/vagrant/.bashrc
 echo "export NTB_API_URL=http://dev.nasjonalturbase.no/"      >> /home/vagrant/.bashrc
 echo "export SH2_API_KEY=$SH2_API_KEY"                        >> /home/vagrant/.bashrc
 echo "export SH2_API_URL=http://sherpa2.turistforeningen.no/" >> /home/vagrant/.bashrc
 echo "export SH2_PG_CON=$SH2_PG_CON"                          >> /home/vagrant/.bashrc
 echo "export SENTRY_DNS=$SENTRY_DNS"                          >> /home/vagrant/.bashrc
-echo "export UPDATE_INTERVAL=10"                              >> /home/vagrant/.bashrc
+echo "export UPDATE_INTERVAL=60"                              >> /home/vagrant/.bashrc
+echo "export WORKERS=4"                                       >> /home/vagrant/.bashrc
 echo "export LIBRATO_USER=$LIBRATO_USER"                      >> /home/vagrant/.bashrc
 echo "export LIBRATO_TOKEN=$LIBRATO_TOKEN"                    >> /home/vagrant/.bashrc
 echo "export LIBRATO_PREFIX=bifrost."                         >> /home/vagrant/.bashrc
