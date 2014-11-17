@@ -9,8 +9,8 @@
 README.md
 Vagrantfile
 node_modules/
-src/
+coffee/
 test/
-utils/
+data/
+env/
 npm-debug.log
-LASTUPDATE

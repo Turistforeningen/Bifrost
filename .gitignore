@@ -19,5 +19,6 @@ node_modules
 .vagrant
 .dotcloud
 env
+data
 lib
 
