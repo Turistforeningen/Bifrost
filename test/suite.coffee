@@ -1,8 +1,6 @@
 assert = require 'assert'
 request = require 'request'
 
-console.log process.env
-
 process.env.SILENT = 'true'
 process.env.SH2_API_URL = 'http://foo/'
 process.env.SH2_API_KEY = '123'
