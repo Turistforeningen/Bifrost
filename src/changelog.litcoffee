@@ -83,8 +83,8 @@
     exports.act2method = (act) ->
       {
         delete: 'delete'
-        update: 'patch'
-        insert: 'patch'
+        update: 'put'
+        insert: 'put'
       }[act]
 
 

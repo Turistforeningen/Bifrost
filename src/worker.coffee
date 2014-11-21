@@ -81,13 +81,13 @@ module.exports = (task, cb) ->
 
           return cb()
 
-        # 501 is returned when the API does not support PATCH. Do a POST
+        # 501 is returned when the API does not support PUT. Do a POST
         # instead.
 
         # 404 is returned when a document has been deleted or does not exist. Do
         # a POST instead.
 
-        if task.method is 'patch' and res.statusCode in [404, 501]
+        if task.method is 'put' and res.statusCode in [404, 501]
           module.parent.exports.queue.unshift task
           task.method = 'post'
 
@@ -113,7 +113,7 @@ module.exports = (task, cb) ->
           module.parent.exports.queue.unshift
             retries: 5
             errors: []
-            method: 'patch'
+            method: 'put'
             from: id: id, type: 'image'
             to: id: id, type: 'bilder'
 

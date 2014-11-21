@@ -22,7 +22,7 @@ beforeEach ->
   request.del = -> throw new Error 'DELETE not implemented'
   request.get = -> throw new Error 'GET not implemented'
   request.post = -> throw new Error 'POST not implemented'
-  request.patch = -> throw new Error 'PATCH not implemented'
+  request.put = -> throw new Error 'put not implemented'
 
   sentry.captureMessage = -> return
 
@@ -60,11 +60,11 @@ describe 'changelog', ->
     it 'delete => delete', ->
       assert.equal changelog.act2method('delete'), 'delete'
 
-    it 'update => patch', ->
-      assert.equal changelog.act2method('update'), 'patch'
+    it 'update => put', ->
+      assert.equal changelog.act2method('update'), 'put'
 
-    it 'insert => patch', ->
-      assert.equal changelog.act2method('insert'), 'patch'
+    it 'insert => put', ->
+      assert.equal changelog.act2method('insert'), 'put'
 
   describe 'sh2ntb()', ->
     it 'cabin2 => steder', ->
@@ -85,14 +85,14 @@ describe 'changelog', ->
   describe 'taskify()', ->
     it 'should return correct task for log', ->
       l = log 'update'
-      t = task 'patch'
+      t = task 'put'
 
       assert.deepEqual changelog.taskify(l), t
 
   describe 'logsToTasks()', ->
     it 'should return task for log', ->
       logs = [log('update')]
-      tasks = [task('patch')]
+      tasks = [task('put')]
 
       assert.deepEqual changelog.logsToTasks(logs), tasks
 
@@ -106,11 +106,11 @@ describe 'changelog', ->
       ]
 
       tasks = [
-        retries: 5, method: 'patch', errors: []
+        retries: 5, method: 'put', errors: []
         from: id: '127792', type: 'trip'
         to: id: '5454ed6db67078876c002b88', type: 'turer'
       ,
-        retries: 5, method: 'patch', errors: []
+        retries: 5, method: 'put', errors: []
         from: id: '133453', type: 'cabin2'
         to: id: '5454ed6db67078876c002b89', type: 'steder'
       ]
@@ -141,15 +141,15 @@ describe 'changelog', ->
 
       assert.deepEqual changelog.logsToTasks(logs), tasks
 
-    it 'update after update => patch', ->
+    it 'update after update => put', ->
       logs = [log('update'), log('update')]
-      tasks = [task('patch')]
+      tasks = [task('put')]
 
       assert.deepEqual changelog.logsToTasks(logs), tasks
 
-    it 'update after insert => patch', ->
+    it 'update after insert => put', ->
       logs = [log('insert'), log('update')]
-      tasks = [task('patch')]
+      tasks = [task('put')]
 
       assert.deepEqual changelog.logsToTasks(logs), tasks
 
@@ -159,15 +159,15 @@ describe 'changelog', ->
 
       assert.deepEqual changelog.logsToTasks(logs), tasks
 
-    it 'insert after update => patch', ->
+    it 'insert after update => put', ->
       logs = [log('update'), log('insert')]
-      tasks = [task('patch')]
+      tasks = [task('put')]
 
       assert.deepEqual changelog.logsToTasks(logs), tasks
 
-    it 'insert after insert => patch', ->
+    it 'insert after insert => put', ->
       logs = [log('insert'), log('insert')]
-      tasks = [task('patch')]
+      tasks = [task('put')]
 
       assert.deepEqual changelog.logsToTasks(logs), tasks
 
@@ -202,7 +202,7 @@ describe 'worker', ->
   beforeEach ->
     task =
       errors: []
-      method: 'patch'
+      method: 'put'
       retries: 5
       from: id: 123, type: 'trip2'
       to: id: 'abc', type: 'turer'
@@ -421,15 +421,15 @@ describe 'worker', ->
 
       worker task
 
-  describe 'PATCH', ->
+  describe 'PUT', ->
     doc = null
 
     beforeEach ->
       doc = foo: 'bar'
       request.get = (opts, cb) -> cb null, {statusCode: 200}, doc
 
-    it 'should send propper PATCH request', (done) ->
-      request.patch = (opts, cb) ->
+    it 'should send propper PUT request', (done) ->
+      request.put = (opts, cb) ->
         assert.deepEqual opts,
           url: 'http://bar/turer/abc/?api_key=abc'
           json: true
@@ -440,7 +440,7 @@ describe 'worker', ->
       worker task
 
     it 'should handle request error', (done) ->
-      request.patch = (opts, cb) ->
+      request.put = (opts, cb) ->
         error = new Error 'HTTP FAKE ERROR'
         error.code = 'FAKE_ERR'
         cb error, {}, {}
@@ -448,7 +448,7 @@ describe 'worker', ->
       worker task, (err) ->
         assert.ifError err
         assert task.errors[0] instanceof Error
-        assert /patch to NTB returned FAKE_ERR/.test task.errors[0]
+        assert /put to NTB returned FAKE_ERR/.test task.errors[0]
         assert.equal exports.queue.length, 1
 
         done()
@@ -456,7 +456,7 @@ describe 'worker', ->
     it.skip 'should handle 403 response code'
 
     it 'should handle 404 response code', (done) ->
-      request.patch = (opts, cb) ->
+      request.put = (opts, cb) ->
         cb null, {statusCode: 404}, {err: 'NotFound'}
 
       worker task, (err) ->
@@ -464,13 +464,13 @@ describe 'worker', ->
 
         assert.equal task.method, 'post'
         assert task.errors[0] instanceof Error
-        assert /patch to NTB returned 404/.test task.errors[0]
+        assert /put to NTB returned 404/.test task.errors[0]
         assert.equal exports.queue.length, 1
 
         done()
 
     it 'should handle 422 response code', (done) ->
-      request.patch = (opts, cb) ->
+      request.put = (opts, cb) ->
         cb null, {statusCode: 422}, {message: 'Validation Error'}
 
       worker task, (err) ->
@@ -478,14 +478,14 @@ describe 'worker', ->
 
         assert task.errors[0] instanceof Error
         assert task.errors[1] instanceof Error
-        assert /patch to NTB returned 422/.test task.errors[0]
+        assert /put to NTB returned 422/.test task.errors[0]
         assert /Validation Error/.test task.errors[1]
         assert.equal exports.queue.length, 0
 
         done()
 
     it 'should log validation errors to Sentry', (done) ->
-      request.patch = (opts, cb) ->
+      request.put = (opts, cb) ->
         cb null, {statusCode: 422}, {message: 'Validation Error'}
 
       sentry.captureMessage = (message, opts) ->
@@ -499,7 +499,7 @@ describe 'worker', ->
         done()
 
     it 'should handle 501 response code', (done) ->
-      request.patch = (opts, cb) ->
+      request.put = (opts, cb) ->
         cb null, {statusCode: 501}, {message: 'HTTP method not implmented'}
 
       worker task, (err) ->
@@ -507,20 +507,20 @@ describe 'worker', ->
 
         assert.equal task.method, 'post'
         assert task.errors[0] instanceof Error
-        assert /patch to NTB returned 501/.test task.errors[0]
+        assert /put to NTB returned 501/.test task.errors[0]
         assert.equal exports.queue.length, 1
 
         done()
 
     it 'should handle non 20x response code', (done) ->
-      request.patch = (opts, cb) ->
+      request.put = (opts, cb) ->
         cb null, {statusCode: 502}, {err: 'ProxyTimeout'}
 
       worker task, (err) ->
         assert.ifError
 
         assert task.errors[0] instanceof Error
-        assert /patch to NTB returned 502/.test task.errors[0]
+        assert /put to NTB returned 502/.test task.errors[0]
         assert.equal exports.queue.length, 1
 
         done()
@@ -528,7 +528,7 @@ describe 'worker', ->
     it 'should add any images to top of queue', (done) ->
       doc = bilder: [1, 2]
 
-      request.patch = (opts, cb) ->
+      request.put = (opts, cb) ->
         cb null, {statusCode: 200}, {}
 
       worker task, (err) ->
@@ -539,13 +539,13 @@ describe 'worker', ->
           {
             retries: 5
             errors: []
-            method: 'patch'
+            method: 'put'
             from: id: 2, type: 'image'
             to: id: 2, type: 'bilder'
           },{
             retries: 5
             errors: []
-            method: 'patch'
+            method: 'put'
             from: id: 1, type: 'image'
             to: id: 1, type: 'bilder'
           }
@@ -554,7 +554,7 @@ describe 'worker', ->
         done()
 
     it 'should complete successfull', (done) ->
-      request.patch = (opts, cb) ->
+      request.put = (opts, cb) ->
         cb null, {statusCode: 200}, {}
 
       worker task, (err) ->
