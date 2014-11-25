@@ -250,8 +250,7 @@ describe 'worker', ->
 
       worker task, (err) ->
         assert.ifError err
-        assert task.errors[0] instanceof Error
-        assert /DELETE from NTB returned FAKE_ERR/.test task.errors[0]
+        assert.equal task.errors[0], 'DELETE from NTB returned FAKE_ERR'
         assert.equal exports.queue.length, 1
 
         done()
@@ -262,8 +261,7 @@ describe 'worker', ->
 
       worker task, (err) ->
         assert.ifError err
-        assert task.errors[0] instanceof Error
-        assert /DELETE from NTB returned 500/.test task.errors[0]
+        assert.equal task.errors[0], 'DELETE from NTB returned 500'
         assert.equal exports.queue.length, 1
 
         done()
@@ -327,8 +325,7 @@ describe 'worker', ->
 
       worker task, (err) ->
         assert.ifError err
-        assert task.errors[0] instanceof Error
-        assert /GET from sherpa2 returned FAKE_ERR/.test task.errors[0]
+        assert.equal task.errors[0], 'GET from sherpa2 returned FAKE_ERR'
         assert.equal exports.queue.length, 1
 
         done()
@@ -339,8 +336,7 @@ describe 'worker', ->
 
       worker task, (err) ->
         assert.ifError err
-        assert task.errors[0] instanceof Error
-        assert /GET from sherpa2 returned no body/.test task.errors[0]
+        assert.equal task.errors[0], 'GET from sherpa2 returned no body'
         assert.equal exports.queue.length, 1
 
         done()
@@ -362,8 +358,7 @@ describe 'worker', ->
 
       worker task, (err) ->
         assert.ifError err
-        assert task.errors[0] instanceof Error
-        assert /GET from sherpa2 returned 502/.test task.errors[0]
+        assert.equal task.errors[0], 'GET from sherpa2 returned 502'
         assert.equal exports.queue.length, 1
 
         done()
@@ -390,10 +385,10 @@ describe 'worker', ->
 
       worker task, (err) ->
         assert.ifError err
-        assert task.errors[0] instanceof Error
-        assert task.errors[1] instanceof Error
-        assert /post to NTB returned 500/.test task.errors
-        assert /KeyError/.test task.errors[1]
+        assert.deepEqual task.errors, [
+          'post to NTB returned 500'
+          'KeyError'
+        ]
         assert.equal exports.queue.length, 0
         done()
 
@@ -447,8 +442,7 @@ describe 'worker', ->
 
       worker task, (err) ->
         assert.ifError err
-        assert task.errors[0] instanceof Error
-        assert /put to NTB returned FAKE_ERR/.test task.errors[0]
+        assert.equal task.errors[0], 'put to NTB returned FAKE_ERR'
         assert.equal exports.queue.length, 1
 
         done()
@@ -463,8 +457,7 @@ describe 'worker', ->
         assert.ifError err
 
         assert.equal task.method, 'post'
-        assert task.errors[0] instanceof Error
-        assert /put to NTB returned 404/.test task.errors[0]
+        assert.equal task.errors[0], 'put to NTB returned 404'
         assert.equal exports.queue.length, 1
 
         done()
@@ -476,10 +469,10 @@ describe 'worker', ->
       worker task, (err) ->
         assert.ifError err
 
-        assert task.errors[0] instanceof Error
-        assert task.errors[1] instanceof Error
-        assert /put to NTB returned 422/.test task.errors[0]
-        assert /Validation Error/.test task.errors[1]
+        assert.deepEqual task.errors, [
+          'put to NTB returned 422'
+          'Validation Error'
+        ]
         assert.equal exports.queue.length, 0
 
         done()
@@ -506,8 +499,7 @@ describe 'worker', ->
         assert.ifError
 
         assert.equal task.method, 'post'
-        assert task.errors[0] instanceof Error
-        assert /put to NTB returned 501/.test task.errors[0]
+        assert.equal task.errors[0], 'put to NTB returned 501'
         assert.equal exports.queue.length, 1
 
         done()
@@ -519,8 +511,7 @@ describe 'worker', ->
       worker task, (err) ->
         assert.ifError
 
-        assert task.errors[0] instanceof Error
-        assert /put to NTB returned 502/.test task.errors[0]
+        assert.equal task.errors[0], 'put to NTB returned 502'
         assert.equal exports.queue.length, 1
 
         done()
