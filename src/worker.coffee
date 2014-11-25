@@ -20,14 +20,14 @@ module.exports = (task, cb) ->
       log 'delete', task, res, body, err
 
       if err
-        task.errors.push new Error "DELETE from NTB returned #{err.code}"
+        task.errors.push "DELETE from NTB returned #{err.code}"
         module.parent.exports.queue.push task
 
         err = res = body = undefined
         return cb()
 
       if res.statusCode not in [404, 204]
-        task.errors.push new Error "DELETE from NTB returned #{res.statusCode}"
+        task.errors.push "DELETE from NTB returned #{res.statusCode}"
         module.parent.exports.queue.push task
 
         sentry.captureMessage "DELETE failed for #{task.from.type}:#{task.from.id}",
@@ -45,14 +45,14 @@ module.exports = (task, cb) ->
     log 'get', task, res, doc, err
 
     if err
-      task.errors.push new Error "GET from sherpa2 returned #{err.code}"
+      task.errors.push "GET from sherpa2 returned #{err.code}"
       module.parent.exports.queue.push task
 
       err = res = body = undefined
       return cb()
 
     if not doc or typeof doc isnt 'object' or Object.keys(doc).length is 0
-      task.errors.push new Error "GET from sherpa2 returned no body"
+      task.errors.push "GET from sherpa2 returned no body"
       module.parent.exports.queue.push task
 
       err = res = body = undefined
@@ -63,7 +63,7 @@ module.exports = (task, cb) ->
       return cb()
 
     if res.statusCode isnt 200
-      task.errors.push new Error "GET from sherpa2 returned #{res.statusCode}"
+      task.errors.push "GET from sherpa2 returned #{res.statusCode}"
       module.parent.exports.queue.push task
 
       err = res = body = undefined
@@ -74,20 +74,20 @@ module.exports = (task, cb) ->
       log task.method, task, res, body, err
 
       if err
-        task.errors.push new Error "#{task.method} to NTB returned #{err.code}"
+        task.errors.push "#{task.method} to NTB returned #{err.code}"
         module.parent.exports.queue.push task
 
         err = res = body = undefined
         return cb()
 
       if res.statusCode not in [200, 201]
-        task.errors.push new Error "#{task.method} to NTB returned #{res.statusCode}"
+        task.errors.push "#{task.method} to NTB returned #{res.statusCode}"
 
         # 422 is returned when the data standard validation failes. We can
         # not recover from this so this should be propperly logged to Sentry.
 
         if res.statusCode is 422
-          task.errors.push new Error body.message if body?.message
+          task.errors.push body.message if body?.message
 
           sentry.captureMessage "Validation failed for #{task.from.type}:#{task.from.id}",
             level: 'error'
@@ -113,7 +113,7 @@ module.exports = (task, cb) ->
         # recover from this so this should be propperly logged to Sentry.
 
         if task.method is 'post' and res.statusCode is 500
-          task.errors.push new Error body.message if body?.message
+          task.errors.push body.message if body?.message
 
           sentry.captureMessage "POST failed for #{task.from.type}:#{task.from.id}",
             level: 'error'
