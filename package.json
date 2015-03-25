@@ -30,7 +30,7 @@
     "coffee-script": "~1",
     "librato": "~0.1",
     "pg": "~2",
-    "raven": "~0.6",
+    "raven": "~0.7",
     "request": "~2"
   },
   "devDependencies": {
