@@ -187,7 +187,7 @@ describe 'changelog', ->
         done()
 
     it 'should return tasks since last log id', (done) ->
-      @timeout 10000
+      @timeout 50000
       changelog.getTasks 1670648, (err, tasks, max) ->
         assert.ifError err
         assert tasks.length > 256
