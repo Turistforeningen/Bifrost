@@ -3,5 +3,5 @@ api:
   buildscript: config/builder
   process: node lib/bifrost.js
   approot: .
-  node_version: v0.10.33
+  node_version: v0.10.38
 
