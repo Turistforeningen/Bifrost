@@ -238,7 +238,8 @@ describe 'worker', ->
     it 'should send propper DELETE request', (done) ->
       request.del = (opts) ->
         assert.deepEqual opts, url: 'http://bar/turer/abc/?api_key=abc'
-        done()
+        setTimeout done, 0
+        return on: -> return
 
       worker task
 
@@ -246,7 +247,12 @@ describe 'worker', ->
       request.del = (opts, cb) ->
         error = new Error 'HTTP FAKE ERROR'
         error.code = 'FAKE_ERR'
-        return cb error
+
+        setTimeout ->
+          cb error
+        , 0
+
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError err
@@ -257,7 +263,11 @@ describe 'worker', ->
 
     it 'should handle non 404 and 204 response code', (done) ->
       request.del = (opts, cb) ->
-        return cb null, {statusCode: 500}
+        setTimeout ->
+          cb null, {statusCode: 500}, {}
+        , 0
+
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError err
@@ -268,7 +278,11 @@ describe 'worker', ->
 
     it 'should log non 404 and 204 response code to Sentry', (done) ->
       request.del = (opts, cb) ->
-        return cb null, {statusCode: 500}, {message: 'Inernal Server Error'}
+        setTimeout ->
+          cb null, {statusCode: 500}, {message: 'Inernal Server Error'}
+        , 0
+
+        return on: -> return
 
       sentry.captureMessage = (message, opts) ->
         assert.equal message, 'DELETE failed for trip2:123'
@@ -283,7 +297,11 @@ describe 'worker', ->
 
     it 'should ignore 404 response code', (done) ->
       request.del = (opts, cb) ->
-        return cb null, {statusCode: 404}, {message: 'Not Found'}
+        setTimeout ->
+          cb null, {statusCode: 404}, {message: 'Not Found'}
+        , 0
+
+        return on: -> return
 
       worker task, (err) ->
         assert.equal task.errors.length, 0
@@ -293,7 +311,11 @@ describe 'worker', ->
 
     it 'should handle 204 response code', (done) ->
       request.del = (opts, cb) ->
-        return cb null, {statusCode: 204}, {}
+        setTimeout ->
+          cb null, {statusCode: 204}, {}
+        , 0
+
+        return on: -> return
 
       worker task, (err) ->
         assert.equal task.errors.length, 0
@@ -305,7 +327,8 @@ describe 'worker', ->
     it 'should decrement remaining retries', (done) ->
       request.get = ->
         assert.equal task.retries, 4
-        done()
+        setTimeout done, 0
+        return on: -> return
 
       worker task
 
@@ -313,7 +336,8 @@ describe 'worker', ->
       request.get = (opts, cb) ->
         assert.equal opts.url, 'http://foo/trip2/123/?api_key=123'
         assert.equal opts.json, true
-        done()
+        setTimeout done, 0
+        return on: -> return
 
       worker task
 
@@ -321,7 +345,12 @@ describe 'worker', ->
       request.get = (opts, cb) ->
         error = new Error 'HTTP FAKE_ERR'
         error.code = 'FAKE_ERR'
-        cb error, {}, {}
+
+        setTimeout ->
+          cb error, {}, {}
+        , 0
+
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError err
@@ -332,7 +361,10 @@ describe 'worker', ->
 
     it 'should handle response without body', (done) ->
       request.get = (opts, cb) ->
-        cb null, {}, {}
+        setTimeout ->
+          cb null, {}, {}
+        , 0
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError err
@@ -343,7 +375,10 @@ describe 'worker', ->
 
     it 'should handle 404 response code', (done) ->
       request.get = (opts, cb) ->
-        cb null, {statusCode: 404}, {err: 'NotFound'}
+        setTimeout ->
+          cb null, {statusCode: 404}, {err: 'NotFound'}
+        , 0
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError err
@@ -354,7 +389,10 @@ describe 'worker', ->
 
     it 'should handle non 200 response code', (done) ->
       request.get = (opts, cb) ->
-        cb null, {statusCode: 502}, {err: 'ProxyTimeout'}
+        setTimeout ->
+          cb null, {statusCode: 502}, {err: 'ProxyTimeout'}
+        , 0
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError err
@@ -365,7 +403,12 @@ describe 'worker', ->
 
   describe 'POST', ->
     beforeEach ->
-      request.get = (opts, cb) -> cb null, {statusCode: 200}, {foo: 'bar'}
+      request.get = (opts, cb) ->
+        setTimeout ->
+          cb null, {statusCode: 200}, {foo: 'bar'}
+        , 0
+        return on: -> return
+
       task.method = 'post'
 
     it 'should send propper POST request', (done) ->
@@ -375,13 +418,17 @@ describe 'worker', ->
           json: true
           body: foo: 'bar'
 
-        done()
+        setTimeout done, 0
+        return on: -> return
 
       worker task
 
     it 'should handle 500 response code', (done) ->
       request.post = (opts, cb) ->
-        cb null, {statusCode: 500}, {message: 'KeyError'}
+        setTimeout ->
+          cb null, {statusCode: 500}, {message: 'KeyError'}
+        , 0
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError err
@@ -394,7 +441,10 @@ describe 'worker', ->
 
     it 'should log 500 responses to Sentry', (done) ->
       request.post = (opts, cb) ->
-        cb null, {statusCode: 500}, {message: 'KeyError'}
+        setTimeout ->
+          cb null, {statusCode: 500}, {message: 'KeyError'}
+        , 0
+        return on: -> return
 
       sentry.captureMessage = (message, opts) ->
         assert.equal message, 'POST failed for trip2:123'
@@ -412,7 +462,9 @@ describe 'worker', ->
         assert.equal opts.url, 'http://bar/turer/?api_key=abc'
         assert.equal opts.json, true
         assert.deepEqual opts.body, foo: 'bar'
-        done()
+
+        setTimeout done, 0
+        return on: -> return
 
       worker task
 
@@ -421,7 +473,11 @@ describe 'worker', ->
 
     beforeEach ->
       doc = foo: 'bar'
-      request.get = (opts, cb) -> cb null, {statusCode: 200}, doc
+      request.get = (opts, cb) ->
+        setTimeout ->
+          cb null, {statusCode: 200}, doc
+        , 0
+        return on: -> return
 
     it 'should send propper PUT request', (done) ->
       request.put = (opts, cb) ->
@@ -430,7 +486,8 @@ describe 'worker', ->
           json: true
           body: foo: 'bar'
 
-        done()
+        setTimeout done, 0
+        return on: -> return
 
       worker task
 
@@ -438,20 +495,29 @@ describe 'worker', ->
       request.put = (opts, cb) ->
         error = new Error 'HTTP FAKE ERROR'
         error.code = 'FAKE_ERR'
-        cb error, {}, {}
+
+        setTimeout ->
+          cb error, {}, {}
+        , 0
+
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError err
         assert.equal task.errors[0], 'put to NTB returned FAKE_ERR'
         assert.equal exports.queue.length, 1
 
-        done()
+        setTimeout done, 0
+        return on: -> return
 
     it.skip 'should handle 403 response code'
 
     it 'should handle 404 response code', (done) ->
       request.put = (opts, cb) ->
-        cb null, {statusCode: 404}, {err: 'NotFound'}
+        setTimeout ->
+          cb null, {statusCode: 404}, {err: 'NotFound'}
+        , 0
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError err
@@ -464,7 +530,10 @@ describe 'worker', ->
 
     it 'should handle 422 response code', (done) ->
       request.put = (opts, cb) ->
-        cb null, {statusCode: 422}, {message: 'Validation Error'}
+        setTimeout ->
+          cb null, {statusCode: 422}, {message: 'Validation Error'}
+        , 0
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError err
@@ -479,7 +548,10 @@ describe 'worker', ->
 
     it 'should log validation errors to Sentry', (done) ->
       request.put = (opts, cb) ->
-        cb null, {statusCode: 422}, {message: 'Validation Error'}
+        setTimeout ->
+          cb null, {statusCode: 422}, {message: 'Validation Error'}
+        , 0
+        return on: -> return
 
       sentry.captureMessage = (message, opts) ->
         assert.equal message, 'Validation failed for trip2:123'
@@ -493,7 +565,10 @@ describe 'worker', ->
 
     it 'should handle 501 response code', (done) ->
       request.put = (opts, cb) ->
-        cb null, {statusCode: 501}, {message: 'HTTP method not implmented'}
+        setTimeout ->
+          cb null, {statusCode: 501}, {message: 'HTTP method not implmented'}
+        , 0
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError
@@ -506,7 +581,10 @@ describe 'worker', ->
 
     it 'should handle non 20x response code', (done) ->
       request.put = (opts, cb) ->
-        cb null, {statusCode: 502}, {err: 'ProxyTimeout'}
+        setTimeout ->
+          cb null, {statusCode: 502}, {err: 'ProxyTimeout'}
+        , 0
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError
@@ -520,7 +598,10 @@ describe 'worker', ->
       doc = bilder: [1, 2]
 
       request.put = (opts, cb) ->
-        cb null, {statusCode: 200}, {}
+        setTimeout ->
+          cb null, {statusCode: 200}, {}
+        , 0
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError
@@ -546,7 +627,10 @@ describe 'worker', ->
 
     it 'should complete successfull', (done) ->
       request.put = (opts, cb) ->
-        cb null, {statusCode: 200}, {}
+        setTimeout ->
+          cb null, {statusCode: 200}, {}
+        , 0
+        return on: -> return
 
       worker task, (err) ->
         assert.ifError
