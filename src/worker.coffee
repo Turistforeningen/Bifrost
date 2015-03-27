@@ -40,6 +40,17 @@ module.exports = (task, cb) ->
       err = res = body = undefined
       return cb()
 
+    # Handle ETIMEDOUT error
+    .on 'error', (err) ->
+      task.errors.push err
+
+      sentry.captureMessage "DELETE to NTB for #{task.from.type}:#{task.from.id} failed",
+        level: 'error'
+        extra: task: task, error: err
+
+      err = undefined
+      return cb()
+
   # Get item from Sherpa 2
   request.get url: task.from.url, json: true, (err, res, doc) ->
     log 'get', task, res, doc, err
@@ -138,6 +149,28 @@ module.exports = (task, cb) ->
 
       err = res = body = undefined
       return cb()
+
+    # Handle ETIMEDOUT error for NTB request
+    .on 'error', (err) ->
+      task.errors.push err
+
+      sentry.captureMessage "#{task.method} to NTB for #{task.from.type}:#{task.from.id} failed",
+        level: 'error'
+        extra: task: task, error: err
+
+      err = undefined
+      return cb()
+
+  # Handle ETIMEDOUT error Sherpa request
+  .on 'error', (err) ->
+    task.errors.push err
+
+    sentry.captureMessage "GET from Sherpa for #{task.from.type}:#{task.from.id} failed",
+      level: 'error'
+      extra: task: task, error: err
+
+    err = undefined
+    return cb()
 
 log = (method, task, res, doc, err) ->
   return if process.env.SILENT is 'true'
