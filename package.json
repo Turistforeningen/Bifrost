@@ -26,15 +26,16 @@
   },
   "homepage": "https://github.com/Turistforeningen/bifrost",
   "dependencies": {
-    "async": "~0",
-    "coffee-script": "~1",
-    "librato": "~0.1",
-    "pg": "~2",
-    "raven": "~0.7",
-    "request": "~2"
+    "async": "^0.9",
+    "coffee-script": "^1.9",
+    "librato": "^0.1",
+    "pg": "4.3.0",
+    "raven": "^0.7",
+    "redis": "^0.12",
+    "request": "^2.55",
+    "supervisor": "^0.6"
   },
   "devDependencies": {
-    "mocha": "~2",
-    "supervisor": "~0"
+    "mocha": "^2.2"
   }
 }
