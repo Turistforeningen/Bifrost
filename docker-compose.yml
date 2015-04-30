@@ -1,0 +1,26 @@
+redis:
+  image: redis:2.8
+  restart: always
+
+worker:
+  build: .
+  links:
+    - redis
+  volumes:
+    - "package.json:/usr/src/app/package.json"
+    - "src:/usr/src/app/src"
+    - "test:/usr/src/app/test"
+  environment:
+    - LIBRATO_PREFIX
+    - LIBRATO_TOKEN
+    - LIBRATO_USER
+    - NODE_ENV
+    - NTB_API_KEY
+    - NTB_API_URL
+    - SENTRY_DNS
+    - SH2_API_KEY
+    - SH2_API_URL
+    - SH2_PG_CON
+    - UPDATE_INTERVAL
+    - WORKERS
+  restart: always

@@ -4,10 +4,10 @@
   "description": "In Norse mythology, Bifröst is the bridge between the land of mortals, Midgard, and the land of the gods, Asgard.",
   "main": "coffee/worker.litcoffee",
   "scripts": {
-    "start": "supervisor -w src -- src/bifrost.litcoffee",
-    "test": "SILENT=ture mocha -b -c --check-leaks test/suite.coffee -R progress --compilers coffee:coffee-script/register -w",
-    "postinstall": "rm -rf lib/* && coffee --bare -o lib/ -c src/",
-    "test-drone": "SILENT=true node_modules/.bin/mocha test/suite.coffee -R spec --compilers coffee:coffee-script/register"
+    "start": "supervisor lib/bifrost.js",
+    "test": "SILENT=ture node_modules/.bin/mocha -b -c --check-leaks test/suite.coffee -R spec --compilers coffee:coffee-script/register",
+    "watch": "SILENT=true node_modules/.bin/mocha test/suite.coffee -R progress --compilers coffee:coffee-script/register -w",
+    "postinstall": "rm -rf lib/* && coffee --bare -o lib/ -c src/"
   },
   "repository": {
     "type": "git",
@@ -26,15 +26,16 @@
   },
   "homepage": "https://github.com/Turistforeningen/bifrost",
   "dependencies": {
-    "async": "~0",
-    "coffee-script": "~1",
-    "librato": "~0.1",
-    "pg": "~2",
-    "raven": "~0.7",
-    "request": "~2"
+    "async": "^0.9",
+    "coffee-script": "^1.9",
+    "librato": "^0.1",
+    "pg": "4.3.0",
+    "raven": "^0.7",
+    "redis": "^0.12",
+    "request": "^2.55",
+    "supervisor": "^0.6"
   },
   "devDependencies": {
-    "mocha": "~2",
-    "supervisor": "~0"
+    "mocha": "^2.2"
   }
 }
