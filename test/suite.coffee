@@ -43,18 +43,17 @@ describe 'changelog', ->
     }
 
   describe 'setLastId()', ->
-    it 'should write and set last id', ->
-      changelog.setLastId 123456
-      assert.equal changelog.getLastId(), 123456
+    it 'should set last id', (done) ->
+      changelog.setLastId 40000600, (err) ->
+        assert.ifError err
+        done()
 
   describe 'getLastId()', ->
-    it 'should return default value', ->
-      changelog.setLastId ''
-      assert.equal changelog.getLastId(), 1670648
-
-    it 'should return default value for no file', ->
-      require('fs').unlinkSync 'data/LASTID'
-      assert.equal changelog.getLastId(), 1670648
+    it 'should get last id', (done) ->
+      changelog.getLastId (err, id) ->
+        assert.ifError err
+        assert.equal id, 40000600
+        done()
 
   describe 'act2method()', ->
     it 'delete => delete', ->

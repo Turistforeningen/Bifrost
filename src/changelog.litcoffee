@@ -1,20 +1,16 @@
     postgres = require './postgres'
-
-    readFileSync = require('fs').readFileSync
-    writeFileSync = require('fs').writeFileSync
+    redis = require './redis'
 
 ## exports.getLastId()
 
-    exports.getLastId = ->
-      try
-        return readFileSync('data/LASTID', encoding: 'utf8') or 1670648
-      catch
-        return 1670648
+    exports.getLastId = (cb) ->
+      redis.get 'lastid', (err, id) ->
+        cb err, id or 1852000
 
 ## exports.setLastId()
 
-    exports.setLastId = (id) ->
-      writeFileSync 'data/LASTID', id, encoding: 'utf8', flag: 'w+'
+    exports.setLastId = (id, cb) ->
+      redis.set 'lastid', id, cb
 
 ## exports.getTasks()
 
