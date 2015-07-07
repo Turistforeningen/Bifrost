@@ -5,7 +5,7 @@
   "main": "coffee/worker.litcoffee",
   "scripts": {
     "start": "supervisor lib/bifrost.js",
-    "test": "SILENT=ture node_modules/.bin/mocha -b -c --check-leaks test/suite.coffee -R spec --compilers coffee:coffee-script/register",
+    "test": "SILENT=true node_modules/.bin/mocha -b -c --check-leaks test/suite.coffee -R spec --compilers coffee:coffee-script/register",
     "watch": "SILENT=true node_modules/.bin/mocha test/suite.coffee -R progress --compilers coffee:coffee-script/register -w",
     "postinstall": "rm -rf lib/* && coffee --bare -o lib/ -c src/"
   },
