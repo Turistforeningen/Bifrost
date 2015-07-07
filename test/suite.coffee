@@ -75,9 +75,6 @@ describe 'changelog', ->
     it 'location2 => områder', ->
       assert.equal changelog.sh2ntb('location2'), 'omr%C3%A5der'
 
-    it 'group => grupper', ->
-      assert.equal changelog.sh2ntb('group'), 'grupper'
-
     it 'image => bilder', ->
       assert.equal changelog.sh2ntb('image'), 'bilder'
 

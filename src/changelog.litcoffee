@@ -30,7 +30,7 @@
             WHERE
               l.lg_id > #{lid}
               AND (
-                l.lg_object IN ('#{['cabin2', 'group', 'location2', 'trip'].join("','")}')
+                l.lg_object IN ('#{['cabin2', 'location2', 'trip'].join("','")}')
                 OR (l.lg_object = 'image' AND l.lg_action = 'delete')
               )
             ORDER
@@ -91,7 +91,6 @@
         cabin2    : 'steder'
         trip      : 'turer'
         location2 : encodeURIComponent('områder')
-        group     : 'grupper'
         image     : 'bilder'
       }[type]
 
