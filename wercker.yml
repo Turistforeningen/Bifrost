@@ -1,4 +1,4 @@
-box: iojs:slim
+box: iojs:1.8
 
 services:
     - redis:2.8
