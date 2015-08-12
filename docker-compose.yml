@@ -1,26 +1,18 @@
 redis:
   image: redis:2.8
-  restart: always
 
 worker:
-  build: .
+  image: iojs:slim
   links:
     - redis
+  working_dir: /usr/src/app
   volumes:
-    - "package.json:/usr/src/app/package.json"
-    - "src:/usr/src/app/src"
-    - "test:/usr/src/app/test"
+    - ".:/usr/src/app"
+  env_file: .env
   environment:
-    - LIBRATO_PREFIX
-    - LIBRATO_TOKEN
-    - LIBRATO_USER
-    - NODE_ENV
-    - NTB_API_KEY
-    - NTB_API_URL
-    - SENTRY_DNS
-    - SH2_API_KEY
-    - SH2_API_URL
-    - SH2_PG_CON
-    - UPDATE_INTERVAL
-    - WORKERS
-  restart: always
+    - LIBRATO_PREFIX=bifrost.test
+    - NODE_ENV=development
+    - NTB_API_URL=http://dev.nasjonalturbase.no/
+    - SH2_API_URL=http://sherpa2.turistforeningen.no/
+    - UPDATE_INTERVAL=10
+    - WORKERS=2
