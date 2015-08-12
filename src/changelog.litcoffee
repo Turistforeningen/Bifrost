@@ -30,7 +30,7 @@
             WHERE
               l.lg_id > #{lid}
               AND (
-                l.lg_object IN ('#{['cabin2', 'location2', 'trip'].join("','")}')
+                l.lg_object IN ('#{['cabin2', 'location2'].join("','")}')
                 OR (l.lg_object = 'image' AND l.lg_action = 'delete')
               )
             ORDER
