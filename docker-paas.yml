@@ -11,16 +11,16 @@ worker:
     - "src:/usr/src/app/src"
     - "test:/usr/src/app/test"
   environment:
-    - LIBRATO_PREFIX
+    - LIBRATO_PREFIX=bifrost.
     - LIBRATO_TOKEN
     - LIBRATO_USER
-    - NODE_ENV
+    - NODE_ENV=production
     - NTB_API_KEY
-    - NTB_API_URL
+    - NTB_API_URL=http://api.nasjonalturbase.no/
     - SENTRY_DNS
     - SH2_API_KEY
-    - SH2_API_URL
+    - SH2_API_URL=http://sherpa2.turistforeningen.no/
     - SH2_PG_CON
-    - UPDATE_INTERVAL
-    - WORKERS
+    - UPDATE_INTERVAL=60
+    - WORKERS=4
   restart: always
