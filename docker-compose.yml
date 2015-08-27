@@ -1,5 +1,5 @@
 redis:
-  image: redis:2.8
+  image: redis:latest
 
 worker:
   image: iojs:slim
