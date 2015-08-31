@@ -22,7 +22,8 @@ beforeEach ->
   request.del = -> throw new Error 'DELETE not implemented'
   request.get = -> throw new Error 'GET not implemented'
   request.post = -> throw new Error 'POST not implemented'
-  request.put = -> throw new Error 'put not implemented'
+  request.put = -> throw new Error 'PUT not implemented'
+  request.patch = -> throw new Error 'PATCH not implemented'
 
   sentry.captureMessage = -> return
 
@@ -607,13 +608,13 @@ describe 'worker', ->
           {
             retries: 5
             errors: []
-            method: 'put'
+            method: 'patch'
             from: id: 2, type: 'image'
             to: id: 2, type: 'bilder'
           },{
             retries: 5
             errors: []
-            method: 'put'
+            method: 'patch'
             from: id: 1, type: 'image'
             to: id: 1, type: 'bilder'
           }
@@ -636,3 +637,47 @@ describe 'worker', ->
 
         done()
 
+  describe 'PATCH', ->
+    doc = task = null
+
+    beforeEach ->
+      doc = foo: 'bar', img: [1,2,3]
+
+      task =
+        retries: 5, method: 'patch', errors: []
+        from: id: '5454ed6db67078876c002b88', type: 'image'
+        to: id: '5454ed6db67078876c002b88', type: 'bilder'
+
+      request.get = (opts, cb) ->
+        setTimeout ->
+          cb null, {statusCode: 200}, doc
+        , 0
+        return on: -> return
+
+    it 'should send propper PATCH request', (done) ->
+      request.patch = (opts, cb) ->
+        assert.deepEqual opts,
+          url: 'http://bar/bilder/5454ed6db67078876c002b88/?api_key=abc'
+          json: true
+          body: foo: 'bar'
+
+        setTimeout done, 0
+        return on: -> return
+
+      worker task
+
+    it 'should retry with POST if PATCH fails', (done) ->
+      request.patch = (opts, cb) ->
+        setTimeout ->
+          cb null, {statusCode: 404}, {message: 'Not Found'}
+        , 0
+        return on: -> return
+
+      worker task, (err) ->
+        assert.ifError
+
+        assert.equal task.errors.length, 1
+        assert.equal exports.queue.length, 1
+        assert.equal exports.queue[0].method, 'post'
+
+        done()

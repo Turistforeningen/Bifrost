@@ -80,6 +80,10 @@ module.exports = (task, cb) ->
       err = res = body = undefined
       return cb()
 
+    # Do not overwrite image urls
+    if task.to.type is 'bilder' and task.method is 'patch'
+      delete doc.img
+
     # Update item in Nasjonal Turbase
     request[task.method] url: task.to.url, json: true, body: doc, (err, res, body) ->
       log task.method, task, res, body, err
@@ -113,7 +117,7 @@ module.exports = (task, cb) ->
         # 404 is returned when a document has been deleted or does not exist. Do
         # a POST instead.
 
-        if task.method is 'put' and res.statusCode in [404, 501]
+        if task.method in ['patch', 'put'] and res.statusCode in [404, 501]
           module.parent.exports.queue.unshift task
           task.method = 'post'
 
@@ -143,7 +147,7 @@ module.exports = (task, cb) ->
           module.parent.exports.queue.unshift
             retries: 5
             errors: []
-            method: 'put'
+            method: 'patch'
             from: id: id, type: 'image'
             to: id: id, type: 'bilder'
 
