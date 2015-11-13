@@ -30,7 +30,7 @@
             WHERE
               l.lg_id > #{lid}
               AND (
-                l.lg_object IN ('#{['cabin2', 'location2'].join("','")}')
+                l.lg_object = 'location2'
                 OR (l.lg_object = 'image' AND l.lg_action = 'delete')
               )
             ORDER
@@ -88,7 +88,6 @@
 
     exports.sh2ntb = (type) ->
       {
-        cabin2    : 'steder'
         trip      : 'turer'
         location2 : encodeURIComponent('områder')
         image     : 'bilder'

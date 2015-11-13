@@ -67,9 +67,6 @@ describe 'changelog', ->
       assert.equal changelog.act2method('insert'), 'put'
 
   describe 'sh2ntb()', ->
-    it 'cabin2 => steder', ->
-      assert.equal changelog.sh2ntb('cabin2'), 'steder'
-
     it 'trip => turer', ->
       assert.equal changelog.sh2ntb('trip'), 'turer'
 
@@ -97,19 +94,12 @@ describe 'changelog', ->
       logs = [
         act: 'update', sh2_type: 'trip', sh2_id: '127792'
         ntb_id: '5454ed6db67078876c002b88'
-      ,
-        act: 'insert', sh2_type: 'cabin2', sh2_id: '133453'
-        ntb_id: '5454ed6db67078876c002b89'
       ]
 
       tasks = [
         retries: 5, method: 'put', errors: []
         from: id: '127792', type: 'trip'
         to: id: '5454ed6db67078876c002b88', type: 'turer'
-      ,
-        retries: 5, method: 'put', errors: []
-        from: id: '133453', type: 'cabin2'
-        to: id: '5454ed6db67078876c002b89', type: 'steder'
       ]
 
       assert.deepEqual changelog.logsToTasks(logs), tasks
